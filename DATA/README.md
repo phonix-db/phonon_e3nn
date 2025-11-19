@@ -1,4 +1,4 @@
-# Description of each column in data_appd.csv
+# Description of each column in data_all.csv
 
 | Column | Description |
 |--------|-------------|
