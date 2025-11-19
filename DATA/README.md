@@ -13,7 +13,7 @@
 | **structure**  | Structure information (numbers, positions, cell, pbc) |
 | **volume**  | Volume of primitive cell [A^3] |
 | **relax_type**  | Type of relaxation (normal or strict) |
-| **kp**  | Lattice thermal conductivity from phonon BTE [W/mK] |
+| **kp**  | Peierls lattice thermal conductivity [W/mK] |
 | **kc**  | Coherence thermal conductivity [W/mK] |
 | **klat**  | Total lattice thermal conductivity (kp + kc) [W/mK] |
 | **max_gap**  | Maximum phonon band gap [THz] |
