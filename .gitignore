@@ -5,6 +5,7 @@ __pycache__/
 
 do.sh
 shell/
+get.sh
 
 # C extensions
 *.so
