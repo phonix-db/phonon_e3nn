@@ -38,4 +38,4 @@ Note
 
 - The transformation matrix is defined using the [Phonopy convention](https://phonopy.github.io/phonopy/setting-tags.html#primitive-axes-tag). 
 - The anharmonic properties correspond to the values at 300 K.
-- Please refer the [ALAMODE official page](https://alamode.readthedocs.io/en/latest/faq.html) for fitting error
+- Please refer to the [official ALAMODE page](https://alamode.readthedocs.io/en/latest/faq.html) for details on the fitting error.
