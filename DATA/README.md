@@ -27,8 +27,15 @@
 | **kcumu_freq**  | Cumulative spectral kappa w.r.t. frequency [W/mK] |
 | **kspec_norm_freq**  | Normalized spectral kappa w.r.t. frequency [arb. unit] |
 | **mfp**  | Phonon mean free path [nm] |
-| **log_mfp**  | Log10 of phonon mean free path |
+| **log_mfp**  | Log10 of phonon mean free path (in nanometer) |
 | **kspec_norm_mfp**  | Normalized spectral kappa w.r.t. MFP [arb. unit] |
 | **kcumu_norm_mfp**  | Cumulative normalized spectral kappa w.r.t. MFP [arb. unit] |
 | **fc2_error**  | Fitting error for 2nd order force constants |
 | **fc3_error**  | Fitting error for 3rd order force constants |
+
+Note
+====
+
+- The transformation is represented by the [Phonopy representation](https://phonopy.github.io/phonopy/setting-tags.html#primitive-axes-tag). 
+- The anharmonic properties correspond to the values at 300 K.
+- Please refer the [ALAMODE official page](https://alamode.readthedocs.io/en/latest/faq.html) for fitting error
