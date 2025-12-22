@@ -12,6 +12,7 @@
 | **trans_conve2sc**  | Transformation matrix from conventional to supercell |
 | **structure**  | Structure information (numbers, positions, cell, pbc) |
 | **volume**  | Volume of primitive cell [A^3] |
+| **nac** | Nonanalytic correction |
 | **relax_type**  | Type of relaxation (normal or strict) |
 | **kp**  | Peierls lattice thermal conductivity [W/mK] |
 | **kc**  | Coherence thermal conductivity [W/mK] |
@@ -38,4 +39,6 @@ Note
 
 - The transformation matrix is defined using the [Phonopy convention](https://phonopy.github.io/phonopy/setting-tags.html#primitive-axes-tag). 
 - The anharmonic properties correspond to the values at 300 K.
-- Please refer to the [official ALAMODE page](https://alamode.readthedocs.io/en/latest/faq.html) for details on the fitting error.
+- Please refer to the [official ALAMODE page](https://alamode.readthedocs.io/en/latest/faq.html) for details on the fitting error and 
+[here](https://alamode.readthedocs.io/en/latest/anphondir/inputanphon.html#anphon-nonanalytic) for the nonanalytic correction.
+

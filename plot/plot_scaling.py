@@ -558,6 +558,9 @@ if __name__ == '__main__':
     parser.add_argument('--min_ns', dest='min_ns', type=int,
                         default=0, help="min_ns [0]")
     
+    parser.add_argument('--ylabel', dest='ylabel', type=str,
+                        default=None, help="ylabel [None]")
+    
     parser.add_argument('--ymin', dest='ymin', type=float,
                         default=None, help="ymin [None]")
     parser.add_argument('--ymax', dest='ymax', type=float,
