@@ -85,8 +85,6 @@ def save_phonon_data(df, filename):
 
 def load_phonon_data(filename, target='phdos', verbose=True):
     df = pd.read_csv(filename)
-    # if num_data is not None:
-    #     df = df.sample(num_data, random_state=seed).reset_index(True)
     return set_phonon_data(df, target=target, verbose=verbose)
 
 def load_prediction_data(filename, verbose=False):
@@ -116,13 +114,14 @@ def set_phonon_data(df, target='phdos', verbose=True):
                     indices_removed[col] = []
                 indices_removed[col].append(i)
     all_ids_remove = set.union(*[set(v) for v in indices_removed.values()]) if indices_removed else set()
+    df_orig = df.copy()
     df = df.drop(index=all_ids_remove)
     df = df.reset_index(drop=True)
     for i, col in enumerate(indices_removed):
         if i == 0:
             print("\n Remove invalid data:")
-        mpids = [df['mp_id'].values[i] for i in indices_removed[col]]
-        print(f" - {col}", ", ".join(map(str, mpids)))
+        mpids = [df_orig['mp_id'].values[i] for i in indices_removed[col]]
+        print(f" + {col} :", ", ".join(map(str, mpids)))
     if len(indices_removed) > 0:
         print()
     
@@ -132,9 +131,6 @@ def set_phonon_data(df, target='phdos', verbose=True):
         df['structure'] = df['structure'].apply(ast.literal_eval).progress_map(lambda x: ase.Atoms.fromdict(x))
         df['formula'] = df['structure'].map(lambda x: x.get_chemical_formula())
         df['species'] = df['structure'].map(lambda x: list(set(x.get_chemical_symbols())))
-    # else:
-    #     raise ValueError("Structure data not found in dataframe. "
-    #                      "Please provide 'structure' column as Atoms object.")
     
     # convert columns to appropriate data types
     flag = False
@@ -179,34 +175,46 @@ def set_phonon_data(df, target='phdos', verbose=True):
     return df
 
 
-def train_valid_test_split(df, valid_size, test_size, seed=12, figname=None):
+def train_valid_test_split(df, valid_size, test_size, seed=12, figname=None, random_split=False):
     
-    species = sorted(list(set(df['species'].sum())))
+    if random_split:
+        unique_mpids = df['mp_id'].unique()
+        train_mpids, temp_mpids = train_test_split(
+            unique_mpids, test_size=valid_size + test_size, random_state=seed)
+        valid_mpids, test_mpids = train_test_split(
+            temp_mpids, test_size=test_size / (valid_size + test_size), random_state=seed)
+        idx_train = df[df['mp_id'].isin(train_mpids)].index.tolist()
+        idx_valid = df[df['mp_id'].isin(valid_mpids)].index.tolist()
+        idx_test = df[df['mp_id'].isin(test_mpids)].index.tolist()
+        return idx_train, idx_valid, idx_test
     
-    # perform an element-balanced train/valid/test split
-    print('split train/dev ...')
-    dev_size = valid_size + test_size
-    stats = get_element_statistics(df, species)
-    idx_train, idx_dev = split_data(stats, dev_size, seed)
-    
-    print('split valid/test ...')
-    stats_dev = get_element_statistics(df.iloc[idx_dev], species)
-    idx_valid, idx_test = split_data(stats_dev, test_size/dev_size, seed)
-    idx_train += df[~df.index.isin(idx_train + idx_valid + idx_test)].index.tolist()
-
-    print('number of training examples:', len(idx_train))
-    print('number of validation examples:', len(idx_valid))
-    print('number of testing examples:', len(idx_test))
-    print('total number of examples:', len(idx_train + idx_valid + idx_test))
-    assert len(set.intersection(*map(set, [idx_train, idx_valid, idx_test]))) == 0
-    
-    if figname is not None:
-        from phonon_e3nn.utils.plotter import plot_element_representation
-        plot_element_representation(
-            stats, idx_train, idx_valid, idx_test, datasets, species,
-            figname=figname)
+    else:
+        species = sorted(list(set(df['species'].sum())))
         
-    return idx_train, idx_valid, idx_test
+        # perform an element-balanced train/valid/test split
+        print('split train/dev ...')
+        dev_size = valid_size + test_size
+        stats = get_element_statistics(df, species)
+        idx_train, idx_dev = split_data(stats, dev_size, seed)
+        
+        print('split valid/test ...')
+        stats_dev = get_element_statistics(df.iloc[idx_dev], species)
+        idx_valid, idx_test = split_data(stats_dev, test_size/dev_size, seed)
+        idx_train += df[~df.index.isin(idx_train + idx_valid + idx_test)].index.tolist()
+
+        print('number of training examples:', len(idx_train))
+        print('number of validation examples:', len(idx_valid))
+        print('number of testing examples:', len(idx_test))
+        print('total number of examples:', len(idx_train + idx_valid + idx_test))
+        assert len(set.intersection(*map(set, [idx_train, idx_valid, idx_test]))) == 0
+        
+        if figname is not None:
+            from phonon_e3nn.utils.plotter import plot_element_representation
+            plot_element_representation(
+                stats, idx_train, idx_valid, idx_test, datasets, species,
+                figname=figname)
+            
+        return idx_train, idx_valid, idx_test
 
 
 def get_element_statistics(df, species):    
@@ -222,7 +230,7 @@ def get_element_statistics(df, species):
     for specie in species:
         stats.at[stats.index[stats['symbol'] == specie].values[0], 'data'] = species_dict[specie]
     stats['count'] = stats['data'].apply(len)
-
+    
     return stats
 
 
@@ -238,15 +246,13 @@ def split_data(df, test_size, seed):
     
     for _, entry in tqdm(df.iterrows(), total=len(df), bar_format=bar_format):
         df_specie = entry.to_frame().T.explode('data')
-
         try:
-            idx_train_s, idx_test_s = train_test_split(df_specie['data'].values, test_size=test_size,
-                                                       random_state=seed)
+            idx_train_s, idx_test_s = train_test_split(
+                df_specie['data'].values, 
+                test_size=test_size,
+                random_state=seed)
         except:
-            # too few examples to perform split - these examples will be assigned based on other constituent elements
-            # (assuming not elemental examples)
             pass
-
         else:
             # add new examples that do not exist in previous lists
             idx_train += [k for k in idx_train_s if k not in idx_train + idx_test]

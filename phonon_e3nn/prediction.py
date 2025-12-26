@@ -47,7 +47,7 @@ import pandas as pd
 
 # utilities
 from tqdm import tqdm
-from phonon_e3nn.utils.utils_data import set_seed, set_phonon_data, train_valid_test_split
+from phonon_e3nn.utils.utils_data import set_seed, train_valid_test_split
 from phonon_e3nn.utils.utils_model import Network, train
 from phonon_e3nn.utils.plotter import (
     plot_lattice_parameters, plot_structure, plot_loss_history, plot_example, visualize_layers)
@@ -281,7 +281,7 @@ def update_result(df1, file_result):
 def run_simulation(
     df,
     target='kspec_norm', outdir='./out',
-    r_max=4.0, valid_size=0.1, test_size=0.1,
+    r_max=4.0, valid_size=0.1, test_size=0.1, random_split=False,
     seed=42, batch_size=16, 
     num_epochs=1, num_epochs_limit=None, patience=50,
     lr=0.001, lr_min=None, weight_decay=0.01, gamma=0.9, 
@@ -319,7 +319,7 @@ def run_simulation(
     figname = outdir + '/fig_element_representation.png'
     idx_train, idx_valid, idx_test = train_valid_test_split(
         df, valid_size=valid_size, test_size=test_size, seed=seed,
-        figname=figname)
+        random_split=random_split, figname=figname)
     
     # For use with the trained model provided, the indices of the training, validation, 
     # and test sets are loaded below. These indices were generated with a specific seed using 

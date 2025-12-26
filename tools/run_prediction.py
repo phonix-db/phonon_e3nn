@@ -147,6 +147,7 @@ def main(options):
         r_max=options.r_max,
         valid_size=options.valid_size,
         test_size=options.test_size,
+        random_split=False if options.random_split == 0 else True,
         batch_size=options.batch_size,
         num_epochs=options.num_epochs,
         num_epochs_limit=options.num_epochs_limit,
@@ -195,6 +196,8 @@ if __name__ == '__main__':
                         default=0.1, help="valid_size [0.1]")
     parser.add_argument('--test_size', dest='test_size', type=float,
                         default=0.1, help="test_size [0.1]")
+    parser.add_argument('--random_split', dest='random_split', type=int,
+                        default=0, help="random split [0] (0: False, 1: True)")
     
     parser.add_argument('--batch_size', dest='batch_size', type=int,
                         default=16, help="batch_size [16]")
