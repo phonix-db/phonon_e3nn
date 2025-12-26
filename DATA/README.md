@@ -17,15 +17,15 @@
 | **kp**  | Peierls lattice thermal conductivity [W/mK] |
 | **kc**  | Coherence thermal conductivity [W/mK] |
 | **klat**  | Total lattice thermal conductivity (kp + kc) [W/mK] |
-| **max_gap**  | Maximum phonon band gap [THz] |
-| **gaps**  | Phonon band gaps information between sections [THz] |
+| **max_gap**  | Maximum phonon band gap [cm^-1] |
+| **gaps**  | Phonon band gaps information between sections [cm^-1] |
 | **kcumu_sections**  | Cumulative kappa in each frequency section [W/mK] |
-| **max_phfreq**  | Maximum phonon frequency [THz] |
-| **phfreq**  | Phonon frequencies for DOS and spectral kappa [THz] |
+| **max_phfreq**  | Maximum phonon frequency [cm^-1] |
+| **phfreq**  | Phonon frequencies for DOS and spectral kappa [cm^-1] |
 | **phdos**  | Phonon DOS [arb. unit] |
 | **pdos**  | Phonon PDOS for each element [arb. unit] |
-| **kspec_freq**  | Spectral kappa w.r.t. frequency [W/mK/THz] |
-| **kcumu_freq**  | Cumulative spectral kappa w.r.t. frequency [W/mK] |
+| **kspec_freq**  | Spectral kappa w.r.t. frequency [W/(m-K)/(cm^-1)] |
+| **kcumu_freq**  | Cumulative spectral kappa w.r.t. frequency [W/(m-K)] |
 | **kspec_norm_freq**  | Normalized spectral kappa w.r.t. frequency [arb. unit] |
 | **mfp**  | Phonon mean free path [nm] |
 | **log_mfp**  | Log10 of phonon mean free path (in nanometer) |

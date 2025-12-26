@@ -26,5 +26,6 @@ python ../tools/run_prediction.py \
     --lr_min       0.01500000 \
     --gamma        0.95 \
     --weight_decay 0.00 \
-    --optimizer    adam
+    --optimizer    adam \
+    --random_split 1
 
