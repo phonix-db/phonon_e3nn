@@ -97,7 +97,7 @@ def main(options):
     
     ## Clean data
     df_phonon = clean_data(df_phonon)
-
+    
     ## Relaxation type
     if options.which_relax == 'both':
         pass
