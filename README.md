@@ -32,7 +32,7 @@ sh run_example.sh
 
 If you use the phonon data from this repository, which is stored in `./phonon_e3nn/DATA`, please cite the following paper:
 
-- **[Phonon Data](https://arxiv.org/abs/2504.21245)**: M. Ohnishi et al., arXiv:2504.21245 (2025).
+- **[Phonon Data](https://arxiv.org/abs/2504.21245)**: M. Ohnishi et al., npj Comp. Maters. (2026), arXiv:2504.21245 (2025).
 
 If you use the Python scripts for machine learning predictions, please cite the following papers in addition to the above paper:
 
