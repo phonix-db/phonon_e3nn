@@ -1,6 +1,6 @@
 # Data and code repository for anharmonic phonon property data
 
-This repository provides anharmonic phonon property dataset obtained with first-principles calculations 
+This repository provides anharmonic phonon property dataset obtained with first-principles calculations (Phonix) 
 and Python scripts for machine learning predictions. 
 These data and code were used in arXiv:2504.21245 (2025).
 
